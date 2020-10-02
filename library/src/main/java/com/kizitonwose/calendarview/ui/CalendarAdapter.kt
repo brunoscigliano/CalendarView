@@ -4,6 +4,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Rect
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -188,7 +189,12 @@ internal class CalendarAdapter(
         }
         val visibleItemPos = findFirstVisibleMonthPosition()
         if (visibleItemPos != RecyclerView.NO_POSITION) {
-            val visibleMonth = months[visibleItemPos]
+            val visibleMonth = try {
+                months[visibleItemPos]
+            } catch (t: Throwable){
+                Log.e("CalendarAdapter", "visibleItemPos > months.size")
+                return
+            }
 
             if (visibleMonth != this.visibleMonth) {
                 this.visibleMonth = visibleMonth
